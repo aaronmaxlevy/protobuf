@@ -10,10 +10,29 @@ local_repository(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+http_archive(
+    name = "rules_shell",
+    sha256 = "bc61ef94facc78e20a645726f64756e5e285a045037c7a61f65af2941f4c25e1",
+    strip_prefix = "rules_shell-0.4.1",
+    url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.4.1/rules_shell-v0.4.1.tar.gz",
+)
+
+load("@rules_shell//shell:repositories.bzl", "rules_shell_dependencies", "rules_shell_toolchains")
+rules_shell_dependencies()
+rules_shell_toolchains()
+
 # Load common dependencies first to ensure we use the correct version
 load("//:protobuf_deps.bzl", "PROTOBUF_MAVEN_ARTIFACTS", "protobuf_deps")
 
 protobuf_deps()
+
+http_archive(
+    name = "rules_java",
+    urls = [
+        "https://github.com/bazelbuild/rules_java/releases/download/8.6.3/rules_java-8.6.3.tar.gz",
+    ],
+    sha256 = "6d8c6d5cd86fed031ee48424f238fa35f33abc9921fd97dd4ae1119a29fc807f",
+)
 
 load("@rules_java//java:rules_java_deps.bzl", "rules_java_dependencies")
 
@@ -26,6 +45,16 @@ rules_java_toolchains()
 load("@bazel_features//:deps.bzl", "bazel_features_deps")
 
 bazel_features_deps()
+
+http_archive(
+    name = "rules_android",
+    sha256 = "4135e2fa37a94bb36c7801e33faef2934c9fe4f9a84d0035eacc4154c2c30e44",
+    strip_prefix = "rules_android-0.6.4",
+    url = "https://github.com/bazelbuild/rules_android/releases/download/v0.6.4/rules_android-v0.6.4.tar.gz",
+)
+
+load("@rules_android//android:rules.bzl", "android_sdk_repository")
+
 
 load("@rules_python//python:repositories.bzl", "py_repositories")
 
